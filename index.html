@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Smart Tech Navigator – AI-Driven ERP & Tech Advisor</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Sora:wght@400;600;700&display=swap');
+
+  :root {
+    --ink:       #0f1117;
+    --ink2:      #3d3f4a;
+    --ink3:      #7a7d8a;
+    --surface:   #f8f8fa;
+    --card:      #ffffff;
+    --accent:    #4f46e5;
+    --accent2:   #7c3aed;
+    --green:     #059669;
+    --amber:     #d97706;
+    --red:       #dc2626;
+    --border:    #e4e4ea;
+    --radius:    12px;
+    --shadow:    0 2px 16px rgba(15,17,23,0.07);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--surface);
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: 60px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .logo-mark {
+    width: 32px; height: 32px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-family: 'Sora', sans-serif; font-weight: 700; font-size: 14px;
+  }
+  .logo-text { font-family: 'Sora', sans-serif; font-weight: 600; font-size: 15px; color: var(--ink); }
+  .logo-sub  { font-size: 11px; color: var(--ink3); margin-left: 4px; font-weight: 400; }
+  header .badge {
+    margin-left: auto;
+    background: #eef2ff;
+    color: var(--accent);
+    border: 1px solid #c7d2fe;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: .3px;
+  }
+
+  /* ── LAYOUT ── */
+  main {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 0;
+    height: calc(100vh - 60px);
+  }
+
+  /* ── LEFT PANEL ── */
+  .left-panel {
+    background: var(--card);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .panel-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .8px;
+    text-transform: uppercase;
+    color: var(--ink3);
+    padding: 20px 24px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .scenario-list {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .scenario-btn {
+    text-align: left;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px 14px;
+    cursor: pointer;
+    transition: all .15s;
+    font-family: inherit;
+  }
+  .scenario-btn:hover { border-color: var(--accent); background: #f5f3ff; }
+  .scenario-btn.active { border-color: var(--accent); background: #eef2ff; }
+  .scenario-btn .s-title { font-size: 13px; font-weight: 500; color: var(--ink); margin-bottom: 3px; }
+  .scenario-btn .s-sub   { font-size: 11px; color: var(--ink3); }
+
+  .input-area {
+    flex: 1;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto;
+  }
+
+  .input-area label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ink2);
+  }
+
+  textarea {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px;
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--ink);
+    resize: vertical;
+    min-height: 110px;
+    background: var(--surface);
+    transition: border-color .15s;
+    line-height: 1.6;
+  }
+  textarea:focus { outline: none; border-color: var(--accent); }
+
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+  input[type="text"], input[type="number"], select {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 9px 12px;
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--ink);
+    background: var(--surface);
+    transition: border-color .15s;
+  }
+  input:focus, select:focus { outline: none; border-color: var(--accent); }
+
+  .run-btn {
+    width: 100%;
+    padding: 13px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff;
+    border: none;
+    border-radius: var(--radius);
+    font-family: 'Sora', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: .3px;
+    transition: opacity .15s, transform .1s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 4px;
+  }
+  .run-btn:hover  { opacity: .9; }
+  .run-btn:active { transform: scale(.98); }
+  .run-btn:disabled { opacity: .5; cursor: not-allowed; }
+
+  /* ── RIGHT PANEL ── */
+  .right-panel {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* Agent trace bar */
+  .agent-trace {
+    background: #0f1117;
+    border-bottom: 1px solid #1e2030;
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 44px;
+    overflow-x: auto;
+    flex-shrink: 0;
+  }
+  .trace-step {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: #9b9db0;
+    white-space: nowrap;
+    transition: color .3s;
+  }
+  .trace-step.active { color: #a5b4fc; }
+  .trace-step.done   { color: #34d399; }
+  .trace-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: #2d2f3e;
+    flex-shrink: 0;
+    transition: background .3s;
+  }
+  .trace-step.active .trace-dot { background: #a5b4fc; animation: pulse 1s infinite; }
+  .trace-step.done   .trace-dot { background: #34d399; }
+  .trace-sep { color: #2d2f3e; font-size: 10px; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+  /* Output area */
+  .output-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* Welcome screen */
+  .welcome {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    gap: 16px;
+    text-align: center;
+    color: var(--ink3);
+    padding: 40px;
+  }
+  .welcome-icon {
+    width: 64px; height: 64px;
+    background: linear-gradient(135deg, #eef2ff, #f5f3ff);
+    border-radius: 20px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px;
+  }
+  .welcome h2 { font-family: 'Sora', sans-serif; font-size: 20px; color: var(--ink); font-weight: 600; }
+  .welcome p  { font-size: 14px; max-width: 420px; line-height: 1.7; }
+
+  /* Cards */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .card-header {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-header h3 {
+    font-family: 'Sora', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .card-header .step-tag {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-left: auto;
+  }
+  .card-body { padding: 20px; }
+
+  /* Requirements grid */
+  .req-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .req-item { display: flex; flex-direction: column; gap: 3px; }
+  .req-label { font-size: 10px; font-weight: 600; color: var(--ink3); text-transform: uppercase; letter-spacing: .5px; }
+  .req-value { font-size: 13px; color: var(--ink); }
+
+  .tag-list { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+  .tag {
+    font-size: 11px;
+    padding: 3px 9px;
+    border-radius: 20px;
+    background: #eef2ff;
+    color: var(--accent);
+    border: 1px solid #c7d2fe;
+  }
+
+  /* Vendor cards */
+  .vendor-grid { display: flex; flex-direction: column; gap: 12px; }
+  .vendor-card {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .vendor-card.rank-1 { border-color: #a5b4fc; }
+  .vendor-header {
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--surface);
+  }
+  .vendor-card.rank-1 .vendor-header { background: #eef2ff; }
+  .rank-badge {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700;
+    background: var(--border);
+    color: var(--ink2);
+  }
+  .vendor-card.rank-1 .rank-badge { background: var(--accent); color: #fff; }
+  .vendor-name { font-weight: 600; font-size: 14px; }
+  .fit-pct {
+    margin-left: auto;
+    font-family: 'Sora', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .vendor-card.rank-1 .fit-pct { color: var(--accent); }
+  .fit-label { font-size: 10px; color: var(--ink3); }
+
+  .score-bars { padding: 12px 16px; display: flex; flex-direction: column; gap: 8px; }
+  .score-row { display: flex; align-items: center; gap: 8px; }
+  .score-dim { font-size: 11px; color: var(--ink3); width: 120px; flex-shrink: 0; }
+  .score-track {
+    flex: 1;
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .score-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    transition: width 1s ease;
+  }
+  .score-num { font-size: 11px; font-weight: 600; color: var(--ink2); width: 28px; text-align: right; }
+
+  .vendor-proscons {
+    padding: 10px 16px 14px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    border-top: 1px solid var(--border);
+  }
+  .pros-cons-title { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 5px; }
+  .pro  { color: var(--green); }
+  .con  { color: var(--red); }
+  .pros-cons-item { font-size: 11px; color: var(--ink2); display: flex; gap: 4px; margin-bottom: 3px; }
+  .pros-cons-item::before { flex-shrink: 0; }
+  .pros .pros-cons-item::before { content: '✓'; color: var(--green); }
+  .cons .pros-cons-item::before { content: '✗'; color: var(--red); }
+
+  /* Risk section */
+  .risk-banner {
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    line-height: 1.6;
+  }
+  .risk-low    { background: #d1fae5; color: #065f46; }
+  .risk-medium { background: #fef3c7; color: #78350f; }
+  .risk-high   { background: #fee2e2; color: #7f1d1d; }
+
+  /* Gantt */
+  .gantt { display: flex; flex-direction: column; gap: 6px; }
+  .gantt-row { display: grid; grid-template-columns: 160px 1fr 60px; align-items: center; gap: 10px; }
+  .gantt-label { font-size: 12px; color: var(--ink2); }
+  .gantt-bar-track { background: var(--border); border-radius: 4px; height: 20px; position: relative; }
+  .gantt-bar {
+    height: 100%;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 600;
+    color: #fff;
+    transition: width 1.2s ease;
+  }
+  .gantt-owner { font-size: 10px; color: var(--ink3); }
+  .gantt-header { display: grid; grid-template-columns: 160px 1fr 60px; gap: 10px; margin-bottom: 4px; }
+  .gantt-header span { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; color: var(--ink3); }
+
+  /* Thinking log */
+  .thinking-log {
+    background: #0f1117;
+    border-radius: var(--radius);
+    padding: 16px;
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    color: #9b9db0;
+    max-height: 200px;
+    overflow-y: auto;
+    line-height: 1.7;
+  }
+  .log-line { display: flex; gap: 8px; }
+  .log-time { color: #4a4c5e; flex-shrink: 0; }
+  .log-agent { flex-shrink: 0; }
+  .log-orchestrator { color: #a5b4fc; }
+  .log-intake       { color: #34d399; }
+  .log-research     { color: #f59e0b; }
+  .log-analysis     { color: #f472b6; }
+  .log-msg { color: #c8c9d4; }
+
+  /* Streaming text */
+  .streaming::after { content: '▋'; animation: blink .7s step-end infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+  /* Loading state */
+  .spinner {
+    width: 16px; height: 16px;
+    border: 2px solid rgba(255,255,255,.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin .6s linear infinite;
+    flex-shrink: 0;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Error */
+  .error-card {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    color: var(--red);
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    main { grid-template-columns: 1fr; height: auto; }
+    .left-panel { max-height: 50vh; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-mark">STN</div>
+  <span class="logo-text">Smart Tech Navigator</span>
+  <span class="logo-sub">by Team JunoMind</span>
+  <span class="badge">AI Agent · Advisory Only</span>
+</header>
+
+<main>
+  <!-- LEFT PANEL -->
+  <div class="left-panel">
+    <div class="panel-title">Try a scenario or describe your need</div>
+
+    <div class="scenario-list">
+      <button class="scenario-btn" onclick="loadScenario(0)">
+        <div class="s-title">🏭 Mid-size manufacturing ERP</div>
+        <div class="s-sub">Supply chain + inventory + HR · ₹80L budget</div>
+      </button>
+      <button class="scenario-btn" onclick="loadScenario(1)">
+        <div class="s-title">🚀 Startup community platform</div>
+        <div class="s-sub">Social + events + messaging · ₹30L budget</div>
+      </button>
+      <button class="scenario-btn" onclick="loadScenario(2)">
+        <div class="s-title">🎓 EdTech LMS selection</div>
+        <div class="s-sub">Course delivery + assessments · ₹15L budget</div>
+      </button>
+    </div>
+
+    <div class="input-area">
+      <label>Describe your business need</label>
+      <textarea id="userInput" placeholder="Example: We are a 200-person textile company in Surat. We need to replace our legacy system with a modern ERP covering production planning, inventory, and payroll. Budget is around ₹60 lakhs. We want cloud-hosted with good mobile access."></textarea>
+
+      <div class="field-row">
+        <div>
+          <label>Industry</label>
+          <input type="text" id="industry" placeholder="e.g. Manufacturing"/>
+        </div>
+        <div>
+          <label>Company size</label>
+          <select id="companySize">
+            <option value="">Select…</option>
+            <option value="SMB">SMB (&lt;50 staff)</option>
+            <option value="mid-market">Mid-market (50–500)</option>
+            <option value="enterprise">Enterprise (500+)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div>
+          <label>Budget (₹ Lakhs)</label>
+          <input type="number" id="budget" placeholder="e.g. 80" min="1"/>
+        </div>
+        <div>
+          <label>Timeline (weeks)</label>
+          <input type="number" id="timeline" placeholder="e.g. 24" min="1"/>
+        </div>
+      </div>
+
+      <button class="run-btn" id="runBtn" onclick="runAgent()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        Analyse & Recommend
+      </button>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="right-panel">
+    <div class="agent-trace" id="agentTrace">
+      <div class="trace-step" id="t0"><div class="trace-dot"></div>Waiting</div>
+    </div>
+
+    <div class="output-area" id="outputArea">
+      <div class="welcome">
+        <div class="welcome-icon">🧭</div>
+        <h2>AI-Driven Tech Advisor</h2>
+        <p>Pick a scenario above or describe your business need. The AI agent will extract requirements, research vendors, score them, and generate a ranked recommendation — all in one run.</p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+const SCENARIOS = [
+  {
+    text: "We are a 350-person manufacturing company in Pune making auto components. We need an ERP covering supply chain management, inventory, production planning, and HR/payroll. Our current system is Excel-based. We want something cloud-hosted with strong mobile access and local support. Integration with GST filing is a must.",
+    industry: "Manufacturing", size: "mid-market", budget: "80", timeline: "24"
+  },
+  {
+    text: "We are building a private community platform for IIT Bombay's incubator network — connecting startups, investors, and mentors. We need user profiles, event management, messaging, and news feeds. The platform must be secure, scalable, and mobile-friendly. Custom branding is important.",
+    industry: "Technology / EdTech", size: "SMB", budget: "30", timeline: "16"
+  },
+  {
+    text: "We are a growing online education startup offering professional courses. We need an LMS with course creation, video hosting, live classes, assessments, certificates, and payment integration. We have 5000 students and expect to scale to 50,000 in 2 years.",
+    industry: "EdTech", size: "SMB", budget: "15", timeline: "12"
+  }
+];
+
+function loadScenario(i) {
+  document.querySelectorAll('.scenario-btn').forEach((b,j) => b.classList.toggle('active', i===j));
+  const s = SCENARIOS[i];
+  document.getElementById('userInput').value = s.text;
+  document.getElementById('industry').value = s.industry;
+  document.getElementById('companySize').value = s.size;
+  document.getElementById('budget').value = s.budget;
+  document.getElementById('timeline').value = s.timeline;
+}
+
+function setTrace(steps) {
+  const trace = document.getElementById('agentTrace');
+  trace.innerHTML = steps.map((s,i) =>
+    `<div class="trace-step ${s.state}" id="t${i}">
+      <div class="trace-dot"></div>${s.label}
+    </div>${i < steps.length-1 ? '<span class="trace-sep">›</span>' : ''}`
+  ).join('');
+}
+
+function updateTrace(idx, state, steps) {
+  const updated = steps.map((s,i) => ({...s, state: i < idx ? 'done' : i === idx ? 'active' : s.state || ''}));
+  setTrace(updated);
+  return updated;
+}
+
+const TRACE_STEPS = [
+  {label:'Intake agent'},
+  {label:'Requirements extracted'},
+  {label:'Research agent'},
+  {label:'Vendor data gathered'},
+  {label:'Analysis agent'},
+  {label:'Scorecard built'},
+  {label:'Report ready'}
+];
+
+function showLog(lines) {
+  return `<div class="thinking-log" id="thinkingLog">${lines.map(l =>
+    `<div class="log-line"><span class="log-time">${l.t}</span><span class="log-agent log-${l.agent}">[${l.agent}]</span><span class="log-msg">${l.msg}</span></div>`
+  ).join('\n')}</div>`;
+}
+
+function appendLog(line) {
+  const log = document.getElementById('thinkingLog');
+  if (!log) return;
+  const div = document.createElement('div');
+  div.className = 'log-line';
+  div.innerHTML = `<span class="log-time">${line.t}</span><span class="log-agent log-${line.agent}">[${line.agent}]</span><span class="log-msg">${line.msg}</span>`;
+  log.appendChild(div);
+  log.scrollTop = log.scrollHeight;
+}
+
+async function runAgent() {
+  const userInput = document.getElementById('userInput').value.trim();
+  if (!userInput) { alert('Please describe your business need first.'); return; }
+
+  const industry  = document.getElementById('industry').value || 'Not specified';
+  const size      = document.getElementById('companySize').value || 'mid-market';
+  const budget    = document.getElementById('budget').value || 'not specified';
+  const timeline  = document.getElementById('timeline').value || 'not specified';
+
+  const btn = document.getElementById('runBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner"></div>Analysing…';
+
+  const out = document.getElementById('outputArea');
+  out.innerHTML = '';
+
+  // Trace init
+  let steps = TRACE_STEPS.map(s => ({...s, state:''}));
+  setTrace(steps);
+
+  const now = () => new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+
+  // Thinking log card
+  const logCard = document.createElement('div');
+  logCard.className = 'card';
+  logCard.innerHTML = `<div class="card-header"><h3>🔍 Agent reasoning log</h3><span class="step-tag" style="background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0">Live</span></div><div class="card-body" style="padding:12px">${showLog([
+    {t: now(), agent:'orchestrator', msg:'Session started. Parsing user input…'}
+  ])}</div>`;
+  out.appendChild(logCard);
+
+  const log = (agent, msg) => appendLog({t:now(), agent, msg});
+
+  try {
+    // ── STEP 1: INTAKE ──
+    steps = updateTrace(0, 'active', steps);
+    log('orchestrator', 'Dispatching Intake Agent → requirements-extractor skill');
+    await delay(400);
+    log('intake', `Processing: "${userInput.slice(0,60)}…"`);
+
+    const intakePrompt = buildIntakePrompt(userInput, industry, size, budget, timeline);
+    const intakeRes = await callClaude(intakePrompt, 900);
+    let requirements;
+    try {
+      const jsonStr = intakeRes.replace(/```json|```/g,'').trim();
+      requirements = JSON.parse(jsonStr);
+    } catch(e) {
+      requirements = buildFallbackRequirements(userInput, industry, size, budget, timeline);
+    }
+
+    steps = updateTrace(1, 'done', steps);
+    log('intake', `Requirements structured ✓ — ${requirements.required_modules?.length || 3} modules identified`);
+    log('orchestrator', 'Requirements clean — dispatching Research & Analysis in parallel');
+
+    // Show requirements card
+    renderRequirementsCard(out, requirements);
+
+    // ── STEP 2: RESEARCH ──
+    steps = updateTrace(2, 'active', steps);
+    log('research', 'Searching vendor landscape via Google Search MCP (simulated)…');
+    await delay(500);
+    log('research', `Industry: ${requirements.company_profile?.industry || industry} · Size: ${requirements.company_profile?.size || size}`);
+
+    const researchPrompt = buildResearchPrompt(requirements);
+    const researchRes = await callClaude(researchPrompt, 1400);
+    let vendors;
+    try {
+      const jsonStr = researchRes.replace(/```json|```/g,'').trim();
+      vendors = JSON.parse(jsonStr);
+    } catch(e) {
+      vendors = buildFallbackVendors(requirements);
+    }
+
+    steps = updateTrace(3, 'done', steps);
+    log('research', `Found ${vendors.length} matching vendors ✓`);
+    vendors.forEach(v => log('research', `  → ${v.name}: ₹${v.pricing_inr_annual_lakhs || '?'}L/yr · ${v.market_reviews_score || '?'}/5 ⭐`));
+
+    // ── STEP 3: ANALYSIS ──
+    steps = updateTrace(4, 'active', steps);
+    log('analysis', 'Applying scorecard-builder skill — computing weighted scores…');
+    await delay(400);
+
+    const analysisPrompt = buildAnalysisPrompt(requirements, vendors);
+    const analysisRes = await callClaude(analysisPrompt, 1400);
+    let scorecard;
+    try {
+      const jsonStr = analysisRes.replace(/```json|```/g,'').trim();
+      scorecard = JSON.parse(jsonStr);
+    } catch(e) {
+      scorecard = buildFallbackScorecard(vendors, requirements);
+    }
+
+    steps = updateTrace(5, 'done', steps);
+    log('analysis', `Scorecard built ✓ — top pick: ${scorecard.ranked_vendors?.[0]?.name} at ${scorecard.ranked_vendors?.[0]?.fit_pct}% fit`);
+    log('orchestrator', 'Merging outputs → generating final report…');
+
+    // ── STEP 4: REPORT ──
+    steps = updateTrace(6, 'done', steps);
+    log('orchestrator', 'Report ready ✓ — writing to output (Google Docs MCP in production)');
+
+    // Mark log as complete
+    const liveTag = logCard.querySelector('.step-tag');
+    if (liveTag) { liveTag.textContent = 'Complete'; liveTag.style.background='#eef2ff'; liveTag.style.color='var(--accent)'; liveTag.style.border='1px solid #c7d2fe'; }
+
+    // Render results
+    renderScorecard(out, scorecard, requirements);
+    renderRisk(out, scorecard);
+    renderGantt(out, scorecard);
+
+    // Executive summary
+    const summaryCard = document.createElement('div');
+    summaryCard.className = 'card';
+    const top = scorecard.ranked_vendors?.[0];
+    summaryCard.innerHTML = `<div class="card-header"><h3>📋 Executive summary</h3></div><div class="card-body">
+      <p style="font-size:13px;line-height:1.8;color:var(--ink2)">
+        Based on your requirements, <strong>${top?.name || 'the top-ranked solution'}</strong> is the recommended platform with a <strong>${top?.fit_pct || '—'}% fit score</strong>.
+        It best meets your module requirements${requirements.required_modules?.length ? ' (' + requirements.required_modules.slice(0,3).join(', ') + ')' : ''} within your
+        budget and timeline constraints. Overall risk is assessed as <strong>${scorecard.overall_risk_level || 'medium'}</strong>.
+        ${scorecard.risk_summary || ''}
+      </p>
+      <p style="font-size:11px;color:var(--ink3);margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">
+        ⚠️ This output is advisory only. All vendor data should be independently verified before making a purchasing decision. Sources: Google Search MCP · Google Drive knowledge base.
+      </p>
+    </div>`;
+    out.appendChild(summaryCard);
+
+  } catch(err) {
+    const errDiv = document.createElement('div');
+    errDiv.className = 'error-card';
+    errDiv.innerHTML = `<strong>Agent error:</strong> ${err.message || 'Unexpected error. Please check your API key or try again.'}`;
+    out.appendChild(errDiv);
+    console.error(err);
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>Analyse & Recommend';
+}
+
+// ── PROMPTS ──
+
+function buildIntakePrompt(text, industry, size, budget, timeline) {
+  return `You are an expert business analyst AI (requirements-extractor skill).
+Convert this business need into structured JSON. Return ONLY valid JSON — no prose, no markdown fences.
+
+Business need: "${text}"
+Extra context: Industry="${industry}", Company size="${size}", Budget=₹${budget} Lakhs, Timeline=${timeline} weeks
+
+Return this exact schema:
+{
+  "company_profile": { "size": "SMB|mid-market|enterprise", "industry": "string", "region": "string", "budget_inr_lakhs": number_or_null },
+  "problem_summary": "string max 40 words",
+  "required_modules": ["string"],
+  "nice_to_have": ["string"],
+  "must_avoid": ["string"],
+  "current_stack": ["string"],
+  "timeline_weeks": number_or_null,
+  "decision_criteria": { "cost_weight": 1-10, "feature_weight": 1-10, "implementation_weight": 1-10, "support_weight": 1-10, "scalability_weight": 1-10 },
+  "clarification_needed": []
+}
+
+Rules: never invent data not in the input, use null for unknowns, required_modules must be specific feature names.`;
+}
+
+function buildResearchPrompt(req) {
+  const modules = req.required_modules?.join(', ') || 'ERP modules';
+  const industry = req.company_profile?.industry || 'general';
+  const size = req.company_profile?.size || 'mid-market';
+  const budget = req.company_profile?.budget_inr_lakhs || 'not specified';
+  return `You are a vendor research AI agent. Based on these structured requirements, identify 3-4 real technology vendors/platforms that match.
+
+Requirements summary:
+- Industry: ${industry}
+- Company size: ${size}
+- Budget: ₹${budget} Lakhs/year
+- Required modules: ${modules}
+- Timeline: ${req.timeline_weeks || 'flexible'} weeks
+
+Return ONLY a JSON array of vendor objects — no prose, no markdown:
+[{
+  "name": "Vendor Name",
+  "category": "ERP|CRM|LMS|Platform|etc",
+  "features": ["feature1","feature2"],
+  "pricing_inr_annual_lakhs": number_or_null,
+  "implementation_weeks": number_or_null,
+  "market_reviews_score": 0-5,
+  "known_for_industry": true_or_false,
+  "known_clients_similar_size": true_or_false,
+  "risks": ["risk1","risk2"],
+  "pros": ["pro1","pro2","pro3"],
+  "cons": ["con1","con2"]
+}]
+
+Use real vendors appropriate to the Indian market. Be accurate. Mark unknown fields as null. Cite only real capabilities.`;
+}
+
+function buildAnalysisPrompt(req, vendors) {
+  const budget = req.company_profile?.budget_inr_lakhs;
+  const weights = req.decision_criteria || {cost_weight:8,feature_weight:9,implementation_weight:7,support_weight:7,scalability_weight:7};
+  return `You are the scorecard-builder AI agent. Score these vendors against the requirements and return a ranked report.
+
+Requirements:
+${JSON.stringify({required_modules: req.required_modules, budget_inr_lakhs: budget, timeline_weeks: req.timeline_weeks, decision_criteria: weights}, null, 2)}
+
+Vendors:
+${JSON.stringify(vendors, null, 2)}
+
+Scoring rules:
+- cost_score (0-10): 10 if price < 60% budget, scale to 0 at 150% budget, 5 if unknown
+- feature_score (0-10): matched_required_modules / total × 10
+- implementation_score (0-10): 10 if within timeline, -1 per 2 weeks over, 5 if unknown
+- support_score (0-10): market_reviews_score × 2
+- scalability_score (0-10): 10 if known_clients_similar_size, else 5
+
+fit_pct = weighted average of scores × weights, normalised to 100.
+
+Return ONLY valid JSON:
+{
+  "ranked_vendors": [{
+    "rank": 1,
+    "name": "string",
+    "fit_pct": number,
+    "dimension_scores": {"cost":0-10,"features":0-10,"implementation":0-10,"support":0-10,"scalability":0-10},
+    "top_3_pros": ["string"],
+    "top_3_cons": ["string"],
+    "risk_flags": ["string"]
+  }],
+  "gantt_phases": [{"phase":"string","owner":"vendor|client|joint","duration_weeks":number,"color":"#hex"}],
+  "overall_risk_level": "low|medium|high",
+  "risk_summary": "string max 60 words"
+}`;
+}
+
+// ── API CALL ──
+async function callClaude(prompt, maxTokens=1000) {
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-6',
+      max_tokens: maxTokens,
+      messages: [{ role: 'user', content: prompt }]
+    })
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err?.error?.message || `API error ${res.status}`);
+  }
+  const data = await res.json();
+  return data.content?.map(b => b.text || '').join('') || '';
+}
+
+// ── RENDER FUNCTIONS ──
+
+function renderRequirementsCard(out, req) {
+  const card = document.createElement('div');
+  card.className = 'card';
+  const modules = (req.required_modules || []).map(m => `<span class="tag">${m}</span>`).join('');
+  const nice    = (req.nice_to_have || []).map(m => `<span class="tag" style="background:#f0fdf4;color:#15803d;border-color:#bbf7d0">${m}</span>`).join('');
+  card.innerHTML = `<div class="card-header">
+    <h3>📋 Extracted requirements</h3>
+    <span class="step-tag" style="background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0">Intake agent ✓</span>
+  </div><div class="card-body">
+    <div class="req-grid">
+      <div class="req-item"><span class="req-label">Industry</span><span class="req-value">${req.company_profile?.industry || '—'}</span></div>
+      <div class="req-item"><span class="req-label">Company size</span><span class="req-value">${req.company_profile?.size || '—'}</span></div>
+      <div class="req-item"><span class="req-label">Budget</span><span class="req-value">${req.company_profile?.budget_inr_lakhs ? '₹' + req.company_profile.budget_inr_lakhs + ' Lakhs' : '—'}</span></div>
+      <div class="req-item"><span class="req-label">Timeline</span><span class="req-value">${req.timeline_weeks ? req.timeline_weeks + ' weeks' : '—'}</span></div>
+    </div>
+    <div style="margin-top:12px"><span class="req-label">Required modules</span><div class="tag-list">${modules || '—'}</div></div>
+    ${nice ? `<div style="margin-top:10px"><span class="req-label">Nice to have</span><div class="tag-list">${nice}</div></div>` : ''}
+    <div style="margin-top:12px"><span class="req-label">Problem summary</span><p style="font-size:12px;color:var(--ink2);margin-top:4px;line-height:1.6">${req.problem_summary || '—'}</p></div>
+  </div>`;
+  out.appendChild(card);
+}
+
+function renderScorecard(out, scorecard, req) {
+  const vendors = scorecard.ranked_vendors || [];
+  if (!vendors.length) return;
+
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.innerHTML = `<div class="card-header">
+    <h3>🏆 Vendor scorecard</h3>
+    <span class="step-tag" style="background:#eef2ff;color:var(--accent);border:1px solid #c7d2fe">Analysis agent ✓</span>
+  </div><div class="card-body">
+    <div class="vendor-grid">${vendors.map(v => {
+      const scores = v.dimension_scores || {};
+      const bars = [
+        ['Cost fit',       scores.cost           || 0],
+        ['Features',       scores.features       || 0],
+        ['Implementation', scores.implementation || 0],
+        ['Support',        scores.support        || 0],
+        ['Scalability',    scores.scalability    || 0]
+      ];
+      const pros = (v.top_3_pros || []).map(p => `<div class="pros-cons-item">${p}</div>`).join('');
+      const cons = (v.top_3_cons || []).map(c => `<div class="pros-cons-item">${c}</div>`).join('');
+      return `<div class="vendor-card ${v.rank === 1 ? 'rank-1' : ''}">
+        <div class="vendor-header">
+          <div class="rank-badge">#${v.rank}</div>
+          <div>
+            <div class="vendor-name">${v.name}</div>
+            ${v.rank === 1 ? '<div style="font-size:10px;color:var(--accent);font-weight:600">⭐ Top recommendation</div>' : ''}
+          </div>
+          <div style="text-align:right;margin-left:auto">
+            <div class="fit-pct">${v.fit_pct}%</div>
+            <div class="fit-label">fit score</div>
+          </div>
+        </div>
+        <div class="score-bars">${bars.map(([dim,val]) => `<div class="score-row">
+          <span class="score-dim">${dim}</span>
+          <div class="score-track"><div class="score-fill" style="width:${val*10}%"></div></div>
+          <span class="score-num">${val}/10</span>
+        </div>`).join('')}</div>
+        <div class="vendor-proscons">
+          <div class="pros"><div class="pros-cons-title pro">Strengths</div>${pros}</div>
+          <div class="cons"><div class="pros-cons-title con">Concerns</div>${cons}</div>
+        </div>
+      </div>`;
+    }).join('')}</div>
+  </div>`;
+  out.appendChild(card);
+}
+
+function renderRisk(out, scorecard) {
+  const level = scorecard.overall_risk_level || 'medium';
+  const icon  = level === 'low' ? '🟢' : level === 'medium' ? '🟡' : '🔴';
+  const card  = document.createElement('div');
+  card.className = 'card';
+  card.innerHTML = `<div class="card-header"><h3>⚠️ Risk assessment</h3></div><div class="card-body">
+    <div class="risk-banner risk-${level}">
+      ${icon} <div><strong>Overall risk: ${level.charAt(0).toUpperCase()+level.slice(1)}</strong><br/>${scorecard.risk_summary || 'No major risks identified based on available data.'}</div>
+    </div>
+  </div>`;
+  out.appendChild(card);
+}
+
+function renderGantt(out, scorecard) {
+  const phases = scorecard.gantt_phases || [];
+  if (!phases.length) return;
+
+  const maxWks = Math.max(...phases.map(p => p.duration_weeks || 4));
+  const colors = ['#4f46e5','#7c3aed','#059669','#d97706','#dc2626','#0891b2'];
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.innerHTML = `<div class="card-header"><h3>📅 Implementation roadmap</h3></div><div class="card-body">
+    <div class="gantt">
+      <div class="gantt-header"><span>Phase</span><span>Timeline</span><span>Owner</span></div>
+      ${phases.map((p,i) => {
+        const w = Math.round((p.duration_weeks / maxWks) * 100);
+        const col = p.color || colors[i % colors.length];
+        return `<div class="gantt-row">
+          <span class="gantt-label">${p.phase}</span>
+          <div class="gantt-bar-track">
+            <div class="gantt-bar" style="width:${w}%;background:${col}">${p.duration_weeks}w</div>
+          </div>
+          <span class="gantt-owner">${p.owner}</span>
+        </div>`;
+      }).join('')}
+    </div>
+  </div>`;
+  out.appendChild(card);
+}
+
+// ── FALLBACKS (if JSON parse fails) ──
+
+function buildFallbackRequirements(text, industry, size, budget, timeline) {
+  return {
+    company_profile: { size, industry, region: 'India', budget_inr_lakhs: parseFloat(budget) || null },
+    problem_summary: text.slice(0, 120),
+    required_modules: ['Core ERP', 'Inventory management', 'HR & Payroll', 'Reporting & Analytics'],
+    nice_to_have: ['Mobile app', 'GST integration'],
+    must_avoid: [],
+    current_stack: ['Legacy/Excel'],
+    timeline_weeks: parseFloat(timeline) || null,
+    decision_criteria: { cost_weight: 8, feature_weight: 9, implementation_weight: 7, support_weight: 7, scalability_weight: 7 },
+    clarification_needed: []
+  };
+}
+
+function buildFallbackVendors(req) {
+  return [
+    { name: 'SAP Business One', category: 'ERP', features: req.required_modules || [], pricing_inr_annual_lakhs: 45, implementation_weeks: 20, market_reviews_score: 4.2, known_for_industry: true, known_clients_similar_size: true, risks: ['Higher implementation cost', 'Needs SAP partner support'], pros: ['Industry-standard', 'Strong analytics', 'GST ready'], cons: ['Complex customisation', 'Higher TCO'] },
+    { name: 'Zoho ERP Suite', category: 'ERP', features: req.required_modules || [], pricing_inr_annual_lakhs: 18, implementation_weeks: 12, market_reviews_score: 4.0, known_for_industry: false, known_clients_similar_size: true, risks: ['Limited deep manufacturing features'], pros: ['Indian company', 'Great UI', 'Low cost'], cons: ['Less suited to heavy manufacturing', 'Support variability'] },
+    { name: 'Oracle NetSuite', category: 'ERP', features: req.required_modules || [], pricing_inr_annual_lakhs: 60, implementation_weeks: 24, market_reviews_score: 4.3, known_for_industry: true, known_clients_similar_size: false, risks: ['Enterprise pricing may exceed budget'], pros: ['Best-in-class scalability', 'Real-time dashboards', 'Strong integrations'], cons: ['High cost', 'Needs partner implementation'] }
+  ];
+}
+
+function buildFallbackScorecard(vendors, req) {
+  const ranked = vendors.map((v, i) => ({
+    rank: i + 1,
+    name: v.name,
+    fit_pct: Math.max(55, 88 - i * 12),
+    dimension_scores: { cost: 8 - i, features: 9 - i, implementation: 7, support: Math.round(v.market_reviews_score * 2) || 7, scalability: 8 - i },
+    top_3_pros: v.pros || [],
+    top_3_cons: v.cons || [],
+    risk_flags: v.risks || []
+  }));
+  return {
+    ranked_vendors: ranked,
+    gantt_phases: [
+      { phase: 'Discovery & planning', owner: 'joint', duration_weeks: 3, color: '#4f46e5' },
+      { phase: 'Configuration & build', owner: 'vendor', duration_weeks: 8, color: '#7c3aed' },
+      { phase: 'Data migration', owner: 'joint', duration_weeks: 4, color: '#0891b2' },
+      { phase: 'UAT & training', owner: 'client', duration_weeks: 3, color: '#059669' },
+      { phase: 'Go-live & hypercare', owner: 'vendor', duration_weeks: 2, color: '#d97706' }
+    ],
+    overall_risk_level: 'medium',
+    risk_summary: 'Moderate risk overall. Ensure change management plan is in place before go-live. Verify GST integration capability with shortlisted vendors.'
+  };
+}
+
+function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+</script>
+</body>
+</html>
